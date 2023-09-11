@@ -1,0 +1,12 @@
+{
+    "folders": [
+        {
+            "name": "rust-nvidia-deepstream",
+            "path": "."
+        },
+        {
+            "name": "Deepstream",
+            "path": "/opt/nvidia/deepstream/deepstream"
+        }
+    ]
+}

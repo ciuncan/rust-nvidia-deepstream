@@ -1,0 +1,18 @@
+[package]
+name = "nvds-sys"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+gtypes = "0.2.0"
+glib-sys = "0.18.1"
+gobject-sys = "0.18.0"
+# gst-plugin = "0.3.2"
+
+[build-dependencies]
+bindgen = "0.68.1"
+itertools = "0.11.0"
+pkg-config = "0.3.27"
+miette = { version = "5", features = ["fancy"] } # optional but gives nicer error messages!
