@@ -1,19 +1,19 @@
 use anyhow::Context;
-use gstreamer as gst;
 use gst::prelude::*;
+use gstreamer as gst;
 
 fn main() -> anyhow::Result<()> {
     setup_observability()?;
 
     tracing::info!("Initializing gstreamer...");
-    gst::init()
-        .context("Failed to initialize GStreamer")?;
+    gst::init().context("Failed to initialize GStreamer")?;
 
     let pipeline = gst::parse_launch("videotestsrc ! nvvideoconvert ! filesink")?;
 
     pipeline.set_state(gst::State::Playing)?;
 
-    let bus = pipeline.bus()
+    let bus = pipeline
+        .bus()
         .context("Bus wasn't available on pipeline!")?;
 
     for msg in bus.iter_timed(gst::ClockTime::NONE) {
@@ -57,10 +57,12 @@ fn setup_observability() -> anyhow::Result<()> {
     let mut env_filter = tracing_subscriber::EnvFilter::try_from_default_env()
         .context("Couldn't load tracing's env-filter from environment")?
         .add_directive("tracing_gstreamer::callsite=warn".parse()?);
-        // .add_directive("my_crate::module=trace".parse()?)
-        // .add_directive("my_crate::my_other_module::something[some_inner_span]=info".parse()?)
+    // .add_directive("my_crate::module=trace".parse()?)
+    // .add_directive("my_crate::my_other_module::something[some_inner_span]=info".parse()?)
     for logger in gstreamer_verbose_loggers.iter() {
-        env_filter = env_filter.add_directive(format!("gstreamer::{}={}", logger, gstreamer_verbose_loggers_level).parse()?);
+        env_filter = env_filter.add_directive(
+            format!("gstreamer::{}={}", logger, gstreamer_verbose_loggers_level).parse()?,
+        );
     }
 
     tracing_subscriber::registry()

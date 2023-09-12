@@ -4,7 +4,6 @@ pub mod ffi;
 // let slice: &mut [ffi::NvDsFrameMeta] = unsafe { std::slice::from_raw_parts_mut(ptr, 1) };
 // let reference: &mut ffi::NvDsFrameMeta = &mut slice[0];
 
-
 macro_rules! impl_glist_iterator {
     ($list_name:ident, $item_type:ty) => {
         pub struct $list_name {

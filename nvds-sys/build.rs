@@ -4,7 +4,8 @@ use itertools::Itertools;
 
 fn main() -> miette::Result<()> {
     let deepstream_include_base = "/opt/nvidia/deepstream/deepstream/sources/includes";
-    let mut includes = [deepstream_include_base].iter()
+    let mut includes = [deepstream_include_base]
+        .iter()
         .map(PathBuf::from)
         .collect::<Vec<_>>();
 
@@ -18,7 +19,8 @@ fn main() -> miette::Result<()> {
         .blocklist_file(".*glib.*")
         // The input header we would like to generate
         // bindings for.
-        .header_contents("bindings.h", 
+        .header_contents(
+            "bindings.h",
             vec![
                 "gstnvdsmeta.h",
                 "nvds_version.h",
@@ -28,10 +30,10 @@ fn main() -> miette::Result<()> {
                 "nvds_tracker_meta.h",
                 "nvbufsurface.h",
             ]
-                .iter()
-                .map(|s| format!(r##" #include "{deepstream_include_base}/{}" "##, s))
-                .join("\n")
-                .as_str()
+            .iter()
+            .map(|nvds_header| format!(r##" #include "{deepstream_include_base}/{nvds_header}" "##))
+            .join("\n")
+            .as_str(),
         )
         // .clang_arg("-x c++")
         // .clang_arg("-std=c++14")
