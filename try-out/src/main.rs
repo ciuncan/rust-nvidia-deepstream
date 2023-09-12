@@ -41,8 +41,7 @@ fn main() -> anyhow::Result<()> {
 }
 
 fn setup_observability() -> anyhow::Result<()> {
-    use tracing_subscriber::{fmt, prelude::*, EnvFilter};
-    use tracing_error::ErrorLayer;
+    use tracing_subscriber::prelude::*;
 
     dotenv::dotenv()?;
     let gstreamer_verbose_loggers_level = "info";
@@ -55,7 +54,7 @@ fn setup_observability() -> anyhow::Result<()> {
         "default",
         "structure",
     ];
-    let mut env_filter = EnvFilter::try_from_default_env()
+    let mut env_filter = tracing_subscriber::EnvFilter::try_from_default_env()
         .context("Couldn't load tracing's env-filter from environment")?
         .add_directive("tracing_gstreamer::callsite=warn".parse()?);
         // .add_directive("my_crate::module=trace".parse()?)
@@ -66,8 +65,9 @@ fn setup_observability() -> anyhow::Result<()> {
 
     tracing_subscriber::registry()
         .with(env_filter)
-        .with(fmt::Layer::default())
-        .with(ErrorLayer::default())
+        .with(tracing_tracy::TracyLayer::new())
+        .with(tracing_subscriber::fmt::Layer::default())
+        .with(tracing_error::ErrorLayer::default())
         .init();
     gst::debug_remove_default_log_function();
     gst::debug_set_default_threshold(gst::DebugLevel::Memdump);

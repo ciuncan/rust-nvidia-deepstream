@@ -16,4 +16,20 @@ tracing-error = "0.2.0"
 tracing-gstreamer = "0.6.0"
 tracing-subscriber = { version = "0.3.17", features = ["env-filter", "json"] }
 
+[dependencies.tracing-tracy]
+version = "0.10.3"
+features = [
+    "enable",
+    "system-tracing",
+    "context-switch-tracing",
+    "sampling",
+    "code-transfer",
+    "broadcast",
+    "only-localhost",
+    # "only-ipv4",
+    # "timer-fallback",
+    # "ondemand",
+    "fibers",
+]
+
 nvds = { package = "nvds-rs", path = "../nvds-rs" }
