@@ -1,0 +1,29 @@
+[package]
+name = "shared"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+anyhow = "1.0.75"
+dotenv = "0.15.0"
+tracing = "0.1.37"
+tracing-chrome = "0.7.1"
+tracing-error = "0.2.0"
+tracing-subscriber = { version = "0.3.17", features = ["env-filter", "json"] }
+[dependencies.tracing-tracy]
+version = "0.10.3"
+features = [
+    "enable",
+    "system-tracing",
+    "context-switch-tracing",
+    "sampling",
+    "code-transfer",
+    "broadcast",
+    "only-localhost",
+    # "only-ipv4",
+    # "timer-fallback",
+    # "ondemand",
+    "fibers",
+]
