@@ -1,8 +1,4 @@
 [workspace]
 resolver = "2"
 
-members = [
-    "try-out",
-    "nvds-rs",
-    "nvds-sys",
-]
+members = ["nvds-rs", "nvds-sys", "try-out", "try-wgpu"]
