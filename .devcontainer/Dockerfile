@@ -49,15 +49,35 @@ RUN apt update && \
         libclang-dev \
         m4 \
         make \
+        ripgrep \
         tk-dev \
         wget \
         xz-utils \
         zip \
         zlib1g-dev
 
+ARG USERNAME=deepstream
+ARG USER_UID=1000
+ARG USER_GID=$USER_UID
+
+# Create the user
+RUN groupadd --gid $USER_GID $USERNAME \
+    && useradd --uid $USER_UID --gid $USER_GID --shell /bin/bash --create-home $USERNAME \
+    && apt-get update \
+    && apt-get install -y sudo \
+    && echo $USERNAME ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/$USERNAME \
+    && chmod 0440 /etc/sudoers.d/$USERNAME
+
+USER $USERNAME
+
 RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
 
 RUN echo " \
-    set -o vi \
-    alias vi='vim' \
-    " >> /root/.bashrc
+        set -o vi \
+        alias vi='vim' \
+        " >> /home/${USERNAME}/.bashrc
+
+ENV PATH="/home/${USERNAME}/.cargo/bin:${PATH}"
+
+RUN cargo install \
+    --git https://github.com/wgsl-analyzer/wgsl-analyzer --rev v0.7.0 wgsl_analyzer

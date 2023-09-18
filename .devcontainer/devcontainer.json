@@ -2,40 +2,67 @@
 	"name": "rust-nvidia-deepstream-dev",
 	"build": {
 		"dockerfile": "./Dockerfile",
-		"context": "."
+		"context": ".",
+		"args": {
+			"USERNAME": "deepstream",
+			"USER_UID": "1000",
+		},
 	},
 	"features": {},
+	"containerEnv": {
+		"XAUTHORITY": "${localEnv:XAUTHORITY}",
+		"DISPLAY": "${localEnv:DISPLAY}",
+		"XDG_RUNTIME_DIR": "$PATH:~/.cache/xdgr",
+		"NVIDIA_VISIBLE_DEVICES": "all",
+		"NVIDIA_DRIVER_CAPABILITIES": "compute,video,graphics,utility",
+	},
+	"containerUser": "deepstream",
+	"remoteUser": "deepstream",
+	"initializeCommand": "xhost +local:docker",
 	"mounts": [
 		{
 			"source": "${localEnv:HOME}",
 			"target": "/host_home",
 			"type": "bind"
-		}
+		},
+		{
+			"source": "/tmp/.X11-unix",
+			"target": "/tmp/.X11-unix",
+			"type": "bind"
+		},
+		{
+			"source": "${localEnv:HOME}/.Xauthority",
+			"target": "/root/.Xauthority",
+			"type": "bind"
+		},
+	],
+	"runArgs": [
+		"--network=host",
 	],
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
 	// "forwardPorts": [],
 	// Use 'postCreateCommand' to run commands after the container is created.
 	// "postCreateCommand": "uname -a",
 	// Set `remoteUser` to `root` to connect as root instead. More info: https://aka.ms/vscode-remote/containers/non-root.
-	"remoteUser": "root",
 	"customizations": {
 		"vscode": {
 			"extensions": [
-				"serayuzgur.crates",
-				"ms-azuretools.vscode-docker",
+				"eamodio.gitlens",
 				"GitHub.copilot-chat",
 				"GitHub.vscode-pull-request-github",
-				"eamodio.gitlens",
-				"rust-lang.rust-analyzer",
-				"timonwong.shellcheck",
-				"vscodevim.vim",
-				"RReverser.llvm",
-				"tamasfe.even-better-toml",
-				"ms-vscode.cpptools",
-				"ms-vscode.cpptools-extension-pack",
 				"josetr.cmake-language-support-vscode",
+				"ms-azuretools.vscode-docker",
+				"ms-vscode.cpptools-extension-pack",
+				"ms-vscode.cpptools",
+				"RReverser.llvm",
+				"rust-lang.rust-analyzer",
+				"serayuzgur.crates",
+				"streetsidesoftware.code-spell-checker",
+				"tamasfe.even-better-toml",
+				"timonwong.shellcheck",
 				"vadimcn.vscode-lldb",
-				"streetsidesoftware.code-spell-checker"
+				"vscodevim.vim",
+				"wgsl-analyzer.wgsl-analyzer"
 			]
 		}
 	}

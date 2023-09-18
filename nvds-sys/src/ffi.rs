@@ -4,6 +4,7 @@
 #![allow(non_camel_case_types)]
 #![allow(non_snake_case)]
 #![allow(unused_variables)]
+#![allow(clippy::missing_safety_doc)]
 
 pub use glib_sys::*;
 pub use gobject_sys::*;

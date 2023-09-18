@@ -21,7 +21,7 @@ fn main() -> miette::Result<()> {
         // bindings for.
         .header_contents(
             "bindings.h",
-            vec![
+            [
                 "gstnvdsmeta.h",
                 "nvds_version.h",
                 "nvdsmeta_schema.h",
